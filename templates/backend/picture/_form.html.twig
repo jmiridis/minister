@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+
+{{ form_row(form.caption) }}
+{{ form_row(form.description) }}
+<div class="mb-3 row">
+    {{ form_label(form.imageFile) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.imageFile) }}
+        {% if picture.image %}
+            <img width="120" height="120" src="{{ vich_uploader_asset(picture, 'imageFile') }}"
+                 alt="{{ picture.caption }}"/>
+        {% endif %}
+    </div>
+</div>
+{{ form_row(form.isActive) }}
+{% embed 'backend/_common/submitButtonGroup.html.twig' %}
+    {% block buttons %}
+        <button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
+    {% endblock %}
+{% endembed %}
+
+{{ form_end(form) }}

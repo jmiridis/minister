@@ -1,0 +1,68 @@
+$image-path: "../../images";
+
+$page-content-color: #f7ebea;
+
+
+$menu-text-color: #7f6b62;
+$menu-underline-color: #f6909b;
+
+@media (max-width: 480px) {
+    body{font-size: 10px;}
+}
+
+@media (min-width: 480px) {
+    body{font-size: 14px;}
+}
+
+body {
+    font-family: "univers-light-norma", sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #7f6b62;
+}
+h1 {
+    font-family: "RecordaScript", serif;
+    font-weight: 500;
+    font-size: 4em;
+    line-height: 1.1;
+    color: #785d72;
+}
+div.content {
+    background-color: $page-content-color;
+}
+.container {
+    margin: 0 auto;
+    width: 870px !important;
+}
+
+div.body {
+    padding-bottom: 2em;
+}
+
+div.footer  {
+    color: lighten($brand-tertiary, 30%);
+    //font-size: 0.9em;
+    //margin-top: .4em;
+    //padding: .1em;
+
+    //.copyright { line-height: 2em; }
+    .copyright { line-height: 24px; }
+    a.social-button  { display: inline-block; height: 32px; width: 40px; text-decoration: none;  }
+    a.social-button.skype { display: none;  background: transparent url($image-path + '/social-icon-skype.png') no-repeat;}
+    a.social-button.email { display: none;  background: transparent url($image-path + '/social-icon-email.png') no-repeat;}
+}
+
+
+h3.popover-title { font-family: $font-family-base; }
+.popover-content { font-family: $font-family-monospace; white-space: pre-line; font-size: .95em; }
+
+.center { text-align: center; }
+.right { text-align: right; }
+
+.narrow {
+    margin: 0 50px 15px 50px;
+}
+
+.short{
+    margin-right: 100px;
+}

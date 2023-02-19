@@ -1,0 +1,26 @@
+$motto-line-color: #efe3e1;
+
+.motto-bar {
+
+    background-color: $brand-tertiary;
+    padding: .5em 0; // outer brown border above and underneath white lines
+
+    // wrapper to paint the horizontal lines
+     > div {
+        border: 1px solid lighten($brand-tertiary, 50%); // $motto-line-color;
+        border-width: 1px 0;
+        padding: .5em 0;
+    }
+
+    // actual text, requires a small margin-top because of weird font
+    .motto {
+        color: lighten($motto-line-color, 30%);
+        font-family: $font-family-serif;
+
+        margin-top: .2em;
+        font-size: 2em;
+        line-height: 1.1em;
+        text-align: right;
+    }
+}
+

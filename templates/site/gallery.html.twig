@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Gallery' %}
+{% set meta_description = 'Get a visual impression of my work.' %}
+
+ {% block stylesheets %}
+     <style>
+         .glide__slide {
+             margin: 0;
+             text-align: center;
+         }
+         .thumb_scroll {
+             overflow-y: scroll;
+             white-space: nowrap;
+             max-width: 800px;
+             margin-top: 10px;
+         }
+     </style>
+ {% endblock %}
+
+{% block body %}
+
+    <div class="glide multi1">
+        <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+                {% for picture in pictures %}
+                    <li class="glide__slide"><img class="image-thumb"
+                                                  src="{{ vich_uploader_asset(picture, 'imageFile')|imagine_filter('picture_gallery') }}"/></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="glide__bullets thumb_scroll" data-glide-el="controls[nav]">
+            {% for picture in pictures %}
+{#                <button class="glide__bullet" data-glide-dir="={{ loop.index0 }}"></button>#}
+                <img class="image-thumb" class="glide__bullet" data-glide-dir="={{ loop.index0 }}"
+                     src="{{ vich_uploader_asset(picture, 'imageFile')|imagine_filter('picture_thumb') }}"/>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block javascripts %}
+     {{ encore_entry_script_tags('glide') }}
+
+     <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+        new Glide('.multi1', {
+          type: 'carousel',
+          focusAt: 'center',
+          perView: 1
+        }).mount()
+      });
+    </script>
+ {% endblock %}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Mayela Miridis{% if page_title is defined %} - {{ page_title|default('') }}{% endif %}{% endblock %}</title>
+    {% if meta_description is defined %}<meta name="description" content="{{ meta_description }}">{% endif %}
+    {#{{ leogout_seo('basic') }}#}
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="&nbsp;"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- load CSS -->
+    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}{% endblock %}
+
+    <!-- load JavaScripts (javascript block at the end of the document) -->
+    {{ encore_entry_script_tags('app') }}
+</head>
+
+<body>
+
+<div class="wrap">
+
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12"><img src="{{ asset('images/header-mayela-miridis.png') }}" style="margin: 0 auto; max-width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="motto-bar">
+            <div>
+                <div class="container motto">And the two became one</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="container">
+
+            {# include the menu and the page title on all but the home-page pages #}
+            {% if app.request.requestUri|trim('/') != path('app_home_no_locale')|trim('/') and app.request.requestUri|trim('/') != path('app_home')|trim('/') %}
+                {{ include('_menu.html.twig') }}
+                <h1>{{ page_title|default('') }}</h1>
+            {% endif %}
+
+            <div class="body">
+            {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="footer container">
+        <div class="row">
+            <div class="col-xs-8 copyright">
+                &copy; COPYRIGHT 2022, e-Solutions S.C.
+            </div>
+            <div class="col-xs-4 text-right">
+                <div class="row">
+                    <div class="col-xs-10">&nbsp;</div>
+                    <div class="col-xs-1 button text-right">
+                        <a title="Skype" href="" class="social-button skype">&nbsp;</a>
+                    </div>
+                    <div class="col-xs-1 button text-right">
+                        {{ "mayela@miridis.com"|obfuscateEmailLink({title:"Email", class:"social-button email"}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-100791706-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>

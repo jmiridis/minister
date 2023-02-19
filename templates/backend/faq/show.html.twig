@@ -1,0 +1,48 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "FAQ Details" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_faq_index', label:'list', title:'FAQ List'}) }}
+            {{ include('backend/_common/editButton.html.twig', {id: faq.id, route: 'backend_faq_edit', label:'', title:'edit FAQ '}) }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>{{ faq.id }}</td>
+            </tr>
+            <tr>
+                <th>Question</th>
+                <td>{{ faq.question }}</td>
+            </tr>
+            <tr>
+                <th>Answer</th>
+                <td>{{ faq.answer }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ faq.position }}</td>
+            </tr>
+            <tr>
+                <th>IsActive</th>
+                <td>{{ faq.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ faq.created ? faq.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ faq.updated ? faq.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

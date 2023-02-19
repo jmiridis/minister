@@ -1,0 +1,17 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Add testimonial" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_testimonial_index', label:'list', title:'Testimonials list'}) }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    {{ include('backend/testimonial/_form.html.twig') }}
+
+{% endblock %}

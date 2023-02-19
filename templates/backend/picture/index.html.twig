@@ -1,0 +1,50 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Gallery" %}
+
+{% block body %}
+
+    {{ include('backend/_common/addButton.html.twig', {route: 'backend_gallery_new', label: 'Add a Picture'}) }}
+
+    <h1>{{ page_title }}</h1>
+
+    <table id="sortable-table" class="table table-condensed sorted_table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>#</th>
+            <th>Image</th>
+            <th>Caption</th>
+            <th>Description</th>
+            <th class="center">active</th>
+            <th class="center">created</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="sortable">
+        {% for picture in pictures %}
+            <tr data-entity-id="{{ picture.id }}" class="sortable">
+                <td class="handle">&nbsp;</td>
+                <td>{{ picture.id }}</td>
+                <td>
+                    <img title="{{ picture.image }}" width="50" height="50" src="{{ vich_uploader_asset(picture, 'imageFile')|imagine_filter('picture_thumb') }}" alt="{{ picture.caption }}"/>
+                </td>
+                <td>{{ picture.caption }}</td>
+                <td>{{ picture.description }}</td>
+                <td class="center">
+                    <div class="form-check form-switch" style="text-align: center;">
+                        <input class="form-check-input dynamic" data-url="{{ path('backend_picture_activate', {id:picture.id}) }}" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if picture.isActive %} checked{% endif %}/>
+                    </div>
+                </td>
+                <td class="center">{{ picture.created|date('D, d M Y H:i:s') }}</td>
+                <td class="right">
+                    <div class="btn-group">
+                        <a role="button" class="btn btn-default btn-sm" title="edit" href="{{ path('backend_gallery_edit', {'id':picture.id}) }}"><span class="fa fa-pencil"></span></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

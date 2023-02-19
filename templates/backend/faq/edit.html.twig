@@ -1,0 +1,19 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Edit FAQ" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_faq_index', label:'list', title:'FAQ list'}) }}
+            {{ include('backend/faq/_delete_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    {{ include('backend/faq/_form.html.twig') }}
+
+{% endblock %}
+

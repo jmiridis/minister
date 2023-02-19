@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'F.A.Q.' %}
+{% set meta_description = 'Find answers here to questions many couples have asked before.' %}
+
+{% block body %}
+
+    <div class="instruction">Click on the question you're interested in to see the answer.</div>
+
+    {% for faq in faqs %}
+        <div class="row faq-row">
+
+            <div class="col-sm-1 hidden-xs text-right">
+                <a class="faq-btn" href="#"><span class="fa fa-heart question"></span></a>
+            </div>
+            <div class="col-sm-10">
+                <div class="question">
+                    <a href="#" class="faq-btn">{{ faq.question }}</a>
+                </div>
+                <div class="answer">
+                    {{ faq.answer|nl2br }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock %}

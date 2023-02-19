@@ -1,0 +1,24 @@
+@import "customVariables";
+@import "custom";
+@import "bootstrap/scss/bootstrap";
+/* ------- customize default button color -------- */
+$default-button-color: #666666;
+$primary-button-color: #1e528c;
+
+// background-color, border-color, color; same for hover
+.btn-default {
+  @include button-variant(
+                  lighten($default-button-color, 90%), lighten($default-button-color, 20%), $default-button-color,
+                  lighten($default-button-color, 50%), lighten($default-button-color, 30%), darken($default-button-color, 20%)
+  );
+}
+
+.btn-primary {
+  @include button-variant(
+                  $primary-button-color,  darken($primary-button-color, 10%), lighten($primary-button-color, 90%),
+                  darken($primary-button-color, 10%), lighten($primary-button-color, 10%), lighten($primary-button-color, 95%)
+  );
+}
+
+@import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";

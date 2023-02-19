@@ -1,0 +1,14 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Backend" %}
+
+{% block body -%}
+
+    <h1>{{ page_title }}</h1>
+
+    <p>Welcome {{ app.user.username }}</p>
+
+    <p>Please choose from the menu above or <a href="{{ path('app_logout') }}">log out</a>.</p>
+
+    <div ></div>
+{% endblock %}

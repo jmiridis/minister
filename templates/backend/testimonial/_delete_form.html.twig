@@ -1,0 +1,4 @@
+<form style="display: inline; margin:0;" method="post" action="{{ path('backend_testimonial_delete', {'id': testimonial.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ testimonial.id) }}">
+    <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+</form>

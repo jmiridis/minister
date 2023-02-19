@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Contact Me' %}
+{% set meta_description = 'Congratulations on your upcoming wedding, if you want to book my services, please fill out the information below or send me an email to mayela@miridis.com and I will get in touch!' %}
+
+{% block body %}
+
+    <div class="row">
+
+        <div class="col-xs-10">
+            <div>
+                Congratulations on your upcoming wedding, if you want to book my services, please fill out the
+                information below or send me an email to <a href="mailto:mayela@miridis.com">mayela@miridis.com</a> and
+                I will get in touch!
+            </div>
+            <br/>
+        </div>
+
+        <div class="col-xs-10">
+            <div>
+                {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.weddingDate) }}
+                {{ form_row(form.location, {label:"Location", attr:{placeholder:"Where will you get married"}}) }}
+                {{ form_row(form.message) }}
+                {% set errors = app.session.flashbag.get('error') %}
+                {% if errors|length %}
+                    <div class="flash alert alert-danger"
+                         style="padding: 10px 20px;">{% for flashMessage in errors %}{{ flashMessage }}{% endfor %}</div>
+                {% endif %}
+                <div class="mb-3 row"><label class="col-form-label col-sm-2 required">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <div class="g-recaptcha" data-sitekey="6Lcfs6wZAAAAAC1COpaxdcKE5olExDQS95dNB_tU"
+                             style="margin-bottom: 15px;"></div>
+                    </div>
+                </div>
+
+                {{ form_row(form.submit, {label: "send", attr: {class:"btn btn-primary"}}) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://google.com/recaptcha/api.js"></script>
+{% endblock %}

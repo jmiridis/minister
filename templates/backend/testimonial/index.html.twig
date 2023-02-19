@@ -1,0 +1,58 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Testimonials" %}
+
+{% block body %}
+
+    {{ include('backend/_common/addButton.html.twig', {route: 'backend_testimonial_new', label: 'Add a Testimonial'}) }}
+
+    <h1>{{ page_title }}</h1>
+
+    <table class="table table-hover table-condensed sorted_table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>#</th>
+            <th>Image</th>
+            <th>Content</th>
+            <th>Signature</th>
+            <th class="center">active</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="sortable">
+        {% for testimonial in testimonials %}
+            <tr data-entity-id="{{ testimonial.id }}" class="sortable">
+                <td class="handle">&nbsp;</td>
+                <td>{{ testimonial.id }}</td>
+                <td>
+                    {% if testimonial.image %}
+                        <img width="50" height="50"
+                             src="{{ vich_uploader_asset(testimonial, 'imageFile')|imagine_filter('testimonial_thumb') }}"
+                             alt="{{ testimonial.signature }}"/>
+                    {% else %}
+                        <img width="50" height="50"
+                             src="{{ asset('images/no-testimonial-image.png')|imagine_filter('testimonial_thumb') }}"
+                             alt="{{ testimonial.signature }}"/>
+                    {% endif %}
+                </td>
+                <td>{{ testimonial.content }}</td>
+                <td>{{ testimonial.signature }}</td>
+                <td class="center">
+                    <div class="form-check form-switch" style="text-align: center;">
+                        <input class="form-check-input dynamic" data-url="{{ path('backend_testimonial_activate', {id:testimonial.id}) }}" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if testimonial.isActive %} checked{% endif %}/>
+                    </div>
+                </td>
+                <td class="right">
+                    <div class="btn-group">
+                        <a role="button" class="btn btn-default btn-sm" title="edit"
+                           href="{{ path('backend_testimonial_edit', {'id':testimonial.id}) }}"><span
+                                    class="fa fa-pencil"></span></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

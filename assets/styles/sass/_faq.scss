@@ -1,0 +1,28 @@
+
+div.instruction {
+    margin: 0 0 20px 15px;
+}
+
+div.faq-row {
+    margin: 5px 0 15px 0;
+
+    div.question {
+        font-style: italic;
+        //font-size: 1.2em;
+        font-size: 14px;
+
+        a {
+            color: #7F6B62;
+        }
+    }
+    .answer {
+        margin: 5px 0 15px 0;
+        display:none;
+    }
+}
+
+.glyphicon.question {
+    //font-size: 1.7em !important;
+    font-size: 18px !important;
+    color: #F5929C;
+}

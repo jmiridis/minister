@@ -1,0 +1,18 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Edit Picture" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_gallery_index', label:'list', title:'Pictures list'}) }}
+            {{ include('backend/picture/_delete_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    {{ include('backend/picture/_form.html.twig') }}
+
+{% endblock %}

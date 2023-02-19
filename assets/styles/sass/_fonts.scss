@@ -1,0 +1,22 @@
+$font-path: "../../fonts";
+@font-face {
+    font-family: 'Kleymissky';
+    src: url($font-path + '/kleymissky/Kleymissky.eot');
+    src: local('â˜º'), url($font-path + '/kleymissky/Kleymissky.woff') format('woff'), url($font-path + '/kleymissky/Kleymissky.ttf') format('truetype'), url($font-path + '/kleymissky/Kleymissky.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'RecordaScript';
+    src: url($font-path + '/recorda-script/RecordaScript.eot');
+    src: local('â˜º'), url($font-path + '/recorda-script/RecordaScript.woff') format('woff'), url($font-path + '/recorda-script/RecordaScript.ttf') format('truetype'), url($font-path + '/recorda-script/RecordaScript.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'univers-light-normal';
+    src: url($font-path + '/univers-light/univers-light-normal.eot');
+    src: local('â˜º'), url($font-path + '/univers-light/univers-light-normal.woff') format('woff'), url($font-path + '/univers-light/univers-light-normal.ttf') format('truetype'), url($font-path + '/univers-light/univers-light-normal.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

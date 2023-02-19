@@ -1,0 +1,18 @@
+controller:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+frontend:
+    resource:
+        path: ../src/Controller/Frontend/
+        namespace: App\Controller\Frontend
+    type: attribute
+
+backend:
+    resource:
+        path: ../src/Controller/Backend/
+        namespace: App\Controller\Backend
+    type: attribute
+    prefix: /backend

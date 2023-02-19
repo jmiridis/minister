@@ -1,0 +1,17 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Add FAQ" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_faq_index', label:'list', title:'FAQ List'}) }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    {{ include('backend/faq/_form.html.twig') }}
+
+{% endblock %}

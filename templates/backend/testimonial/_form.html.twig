@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+{{ form_row(form.content) }}
+{{ form_row(form.signature) }}
+<div class="mb-3 row">
+    {{ form_label(form.imageFile) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.imageFile) }}
+        {% if testimonial.image %}
+            <img width="120" height="120" src="{{ vich_uploader_asset(testimonial, 'imageFile') }}"
+                 alt="{{ testimonial.signature }}"/>
+        {% else %}
+            <img width="120" height="120" src="{{ asset('/images/no-testimonial-image.png') }}"
+                 alt="{{ testimonial.signature }}"/>
+        {% endif %}
+    </div>
+</div>
+{{ form_row(form.position) }}
+{{ form_row(form.isActive) }}
+{% embed 'backend/_common/submitButtonGroup.html.twig' %}
+    {% block buttons %}
+        <button class="btn btn-primary btn-sm">{{ button_label|default('Save') }}</button>
+    {% endblock %}
+{% endembed %}
+{{ form_end(form) }}

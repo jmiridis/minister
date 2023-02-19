@@ -1,0 +1,12 @@
+<div class="menu">
+    <ul class="list-inline ">
+        <li><a href="{{ path('app_home') }}"         {% if app.request.requestUri == path('app_home') %} class="selected"{% endif %}>HOME</a></li>
+        <li><a href="{{ path('app_aboutMe') }}"      {% if app.request.requestUri == path('app_aboutMe') %} class="selected"{% endif %}>ABOUT ME</a></li>
+        <li><a href="{{ path('app_gallery') }}"      {% if app.request.requestUri == path('app_gallery') %} class="selected"{% endif %}>GALLERY</a></li>
+        <li><a href="{{ path('app_testimonials') }}" {% if app.request.requestUri == path('app_testimonials') %} class="selected"{% endif %}>TESTIMONIALS</a></li>
+        <li><a href="{{ path('app_faq') }}"          {% if app.request.requestUri == path('app_faq') %} class="selected"{% endif %}>FAQ</a></li>
+        {#<li><a href="{{ path('app_services') }}"          {% if app.request.requestUri == path('app_services') %} class="selected"{% endif %}>Services</a></li>#}
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li><a href="{{ path('app_contact') }}"      {% if app.request.requestUri == path('app_contact') %} class="selected"{% endif %}>@CONTACT ME</a></li>
+    </ul>
+</div>

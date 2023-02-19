@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Testimonials' %}
+{% set meta_description = 'Find out what couples have said about my ceremonies.' %}
+
+{% block body %}
+
+    {% for testimonial in testimonials %}
+        <div class="testimonial row{% if not loop.last %} separator{% endif %}">
+            <div class="col-sm-3 col-md-3">
+                <div class="row center-block">
+                    <div class="col-xs-12 text-center">
+                        {% if testimonial.image %}
+                            <img width="120" height="120" src="{{ vich_uploader_asset(testimonial, 'imageFile')|imagine_filter('testimonial_image') }}"
+                                 alt="{{ testimonial.signature }}"/>
+                        {% else %}
+                            <img width="120" height="120" src="{{ asset('images/no-testimonial-image.png') }}"
+                                 alt="{{ testimonial.signature }}"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 col-md-8">
+                <div class="comment">{{ testimonial.content }}</div>
+                <div class="author">{{ testimonial.signature }}</div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

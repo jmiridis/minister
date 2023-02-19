@@ -1,0 +1,52 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "FAQs" %}
+
+{% block body %}
+
+    {{ include('backend/_common/addButton.html.twig', {route: 'backend_faq_new', label: 'Add an FAQ'}) }}
+
+    <h1>{{ page_title }}</h1>
+
+    <table class="table table-condensed sorted_table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>#</th>
+            <th>Question/Answer</th>
+            <th class="center">active</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="sortable">
+        {% for faq in faqs %}
+            <tr data-entity-id="{{ faq.id }}">
+                <td class="handle">&nbsp;</td>
+                <td>{{ faq.id }}</td>
+                <td>
+                    <b>{{ faq.question }}</a></b>
+                    <br/>
+                    {% if faq.answer|length > 80 %}
+                        <a href="javascript:void(0)" title="{{ faq.answer }}">{{ faq.answer|slice(0, 80) }}</a>
+                    {% else %}
+                        {{ faq.answer }}
+                    {% endif %}
+                </td>
+                <td class="center">{% if faq.isActive %}<i class="fa fa-check"></i>{% else %}<i
+                            class="fa fa-ban"></i>{% endif %}</td>
+                <td class="right">
+                    <div class="btn-group">
+                        <a role="button" class="btn btn-default btn-sm" title="edit"
+                           href="{{ path('backend_faq_edit', {'id':faq.id}) }}"><span
+                                    class="fa fa-pencil"></span></a>
+                        <a role="button" class="btn btn-default btn-sm" title="details"
+                           href="{{ path('backend_faq_show', {'id':faq.id}) }}"><span
+                                    class="fa fa-eye"></span></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
