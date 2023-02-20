@@ -5,13 +5,16 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 
 use App\Repository\ContactRepository;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Contact
 {
     use AuditTrait;
+    use SoftDeletableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

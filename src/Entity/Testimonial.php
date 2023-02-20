@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\Uploadable\Uploadable;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -13,9 +14,11 @@ use App\Repository\TestimonialRepository;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: TestimonialRepository::class)]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Testimonial implements Uploadable
 {
     use AuditTrait;
+    use SoftDeletableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

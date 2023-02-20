@@ -2,16 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use App\Repository\UserRepository;
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use AuditTrait;
+    use SoftDeletableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var ?string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;

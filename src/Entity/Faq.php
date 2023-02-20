@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\FaqRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
+
+use App\Repository\FaqRepository;
 
 #[ORM\Entity(repositoryClass: FaqRepository::class)]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Faq
 {
     use AuditTrait;
+    use SoftDeletableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

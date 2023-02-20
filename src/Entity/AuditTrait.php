@@ -19,9 +19,6 @@ trait AuditTrait
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private DateTime $updated;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private DateTime $deletedAt;
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'created_by', referencedColumnName: 'id', nullable: true)]
     private ?User $createdBy = null;
@@ -50,18 +47,6 @@ trait AuditTrait
     public function setUpdated(DateTime $updated): self
     {
         $this->updated = $updated;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?DateTime
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(?DateTime $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }
