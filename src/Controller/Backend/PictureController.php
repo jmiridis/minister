@@ -16,7 +16,7 @@ use App\Repository\PictureRepository;
 #[Route('/gallery')]
 class PictureController extends AbstractController
 {
-    #[Route('/', name: 'backend_gallery_index', methods: ['GET'])]
+    #[Route('/', name: 'backend_picture_index', methods: ['GET'])]
     public function index(PictureRepository $pictureRepository): Response
     {
         return $this->render('backend/picture/index.html.twig', [
@@ -24,7 +24,7 @@ class PictureController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'backend_gallery_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'backend_picture_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PictureRepository $pictureRepository): Response
     {
         $picture = new Picture();
@@ -34,7 +34,7 @@ class PictureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureRepository->save($picture, true);
 
-            return $this->redirectToRoute('backend_gallery_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('backend/picture/new.html.twig', [
@@ -43,7 +43,7 @@ class PictureController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'backend_gallery_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'backend_picture_show', methods: ['GET'])]
     public function show(Picture $picture): Response
     {
         return $this->render('backend/picture/show.html.twig', [
@@ -51,7 +51,7 @@ class PictureController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'backend_gallery_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'backend_picture_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Picture $picture, PictureRepository $pictureRepository): Response
     {
         $form = $this->createForm(PictureType::class, $picture);
@@ -60,7 +60,7 @@ class PictureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureRepository->save($picture, true);
 
-            return $this->redirectToRoute('backend_gallery_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('backend/picture/edit.html.twig', [
@@ -79,13 +79,13 @@ class PictureController extends AbstractController
         return new JsonResponse(['checked' => $checked]);
     }
 
-    #[Route('/{id}', name: 'backend_gallery_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'backend_picture_delete', methods: ['POST'])]
     public function delete(Request $request, Picture $picture, PictureRepository $pictureRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->request->get('_token'))) {
             $pictureRepository->remove($picture, true);
         }
 
-        return $this->redirectToRoute('backend_gallery_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
     }
 }

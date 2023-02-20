@@ -2,19 +2,18 @@
 
 namespace App\Command;
 
-use App\Entity\Picture;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\KernelInterface;
+
+use App\Entity\Picture;
 
 #[AsCommand(
     name: 'app:picture-import',
@@ -50,6 +49,7 @@ class PictureImportCommand extends Command
 
             return Command::SUCCESS;
         } catch (Exception $e) {
+            $io->error($e->getMessage());
             return Command::FAILURE;
         }
     }

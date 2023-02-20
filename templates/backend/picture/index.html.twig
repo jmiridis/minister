@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {{ include('backend/_common/addButton.html.twig', {route: 'backend_gallery_new', label: 'Add a Picture'}) }}
+    {{ include('backend/_common/addButton.html.twig', {route: 'backend_picture_new', label: 'Add a Picture'}) }}
 
     <h1>{{ page_title }}</h1>
 
@@ -39,7 +39,7 @@
                 <td class="center">{{ picture.created|date('D, d M Y H:i:s') }}</td>
                 <td class="right">
                     <div class="btn-group">
-                        <a role="button" class="btn btn-default btn-sm" title="edit" href="{{ path('backend_gallery_edit', {'id':picture.id}) }}"><span class="fa fa-pencil"></span></a>
+                        <a role="button" class="btn btn-default btn-sm" title="edit" href="{{ path('backend_picture_edit', {'id':picture.id}) }}"><span class="fa fa-pencil"></span></a>
                     </div>
                 </td>
             </tr>
