@@ -4,7 +4,7 @@
         <li><a href="{{ path('backend_picture_index') }}" {% if app.request.requestUri == path('backend_picture_index') %} class="selected"{% endif %}>Gallery</a></li>
         <li><a href="{{ path('backend_faq_index') }}" {% if app.request.requestUri == path('backend_faq_index') %} class="selected"{% endif %}>FAQs</a></li>
         <li><a href="{{ path('backend_testimonial_index') }}" {% if app.request.requestUri == path('backend_testimonial_index') %} class="selected"{% endif %}>Testimonials</a></li>
-        <li><a href="{{ path('backend_testimonial_new') }}" {% if app.request.requestUri == path('backend_testimonial_new') %} class="selected"{% endif %}>Services</a></li>
+{#        <li><a href="{{ path('backend_testimonial_new') }}" {% if app.request.requestUri == path('backend_testimonial_new') %} class="selected"{% endif %}>Services</a></li>#}
         <li></li>
         <li style="float: right;"><a target="minister-home" href="{{ path('app_home') }}">Frontend <i class="glyphicon glyphicon-new-window"></i></a></li>
     </ul>
