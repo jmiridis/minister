@@ -1,0 +1,56 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Contact Requests" %}
+
+{# {% block javascripts %} #}
+{#    <script src="/assets/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script> #}
+{#    <script> #}
+{#      $(function(){ #}
+{#        $('[data-toggle="popover"]').popover(); #}
+{#      }); #}
+{#    </script> #}
+{# {% endblock %} #}
+
+{% block body -%}
+
+    <h1>{{ page_title }}</h1>
+
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Received</th>
+            <th>Name(s)</th>
+            <th>Wedding date</th>
+            <th>Location</th>
+            <th>Message</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.created|date('D, d M Y H:i') }}</td>
+                <td>{{ contact.name }}</td>
+                <td>{% if contact.weddingDate %}{{ contact.weddingDate|date('D d/M/Y') }}{% endif %}</td>
+                <td>{{ contact.location }}</td>
+                <td>
+                    <a href="#" data-toggle="popover" data-trigger="focus" data-placement="left"
+                       title="{{ contact.name }} | {{ contact.created|date('d/m/Y') }}"
+                       data-content="{{ contact.message }}">
+                        {{ contact.message|slice(0, 20) }}
+                    </a>
+                </td>
+                <td class="right">
+                    <div class="btn-group">
+                        <a role="button" class="btn btn-default btn-sm" title="details"
+                           href="{{ path('backend_contact_show', {'id':contact.id}) }}"><span
+                                    class="fa fa-eye"></span></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
