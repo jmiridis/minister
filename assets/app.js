@@ -11,6 +11,7 @@ import './styles/sass/app.scss'
 // start the Stimulus application
 import './bootstrap'
 
+import 'webpack-jquery-ui/sortable'
 import $ from 'jquery'
 
 $('a.faq-btn')
@@ -39,4 +40,30 @@ $('div.form-switch input.form-check-input.dynamic').bind('change', function(evt)
     }
     el.removeAttr('disabled')
   })
+})
+
+$('tbody.sortable').sortable({
+  axis: "y",
+  helper: function(e, ui) {
+    ui.children().each(function() {
+      $(this).width($(this).width())
+    })
+    return ui
+  },
+  update: function(event, ui) {
+
+    console.log(ui.item.data('entity-id'))
+    console.log(ui.item.index() + 1)
+    let url = ui.item.data('url')
+      .replace('_id_', ui.item.data('entity-id'))
+      .replace('_position_', ui.item.index())
+    console.log(url)
+
+    $.post(url, {}, function(data) {
+      console.log(data)
+      if (data.rc !== 200) {
+        alert(data)
+      }
+    })
+  }
 })

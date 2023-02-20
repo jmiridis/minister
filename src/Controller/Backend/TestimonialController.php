@@ -21,7 +21,7 @@ class TestimonialController extends AbstractController
     public function index(TestimonialRepository $testimonialRepository): Response
     {
         return $this->render('backend/testimonial/index.html.twig', [
-            'testimonials' => $testimonialRepository->getOrdered(),
+            'testimonials' => $testimonialRepository->findAllSorted(),
         ]);
     }
 
@@ -76,6 +76,20 @@ class TestimonialController extends AbstractController
             'form'        => $form,
             'delete_form' => $this->createDeleteForm($testimonial)->createView(),
         ]);
+    }
+
+    #[Route('/{id}/sort/{position}', name: 'backend_testimonial_sort', methods: ['POST'])]
+    public function sortAction(Testimonial $testimonial, int $position, EntityManagerInterface $em): JsonResponse
+    {
+        try {
+            $testimonial->setPosition($position);
+            $em->persist($testimonial);
+            $em->flush();
+
+            return new JsonResponse(['rc' => 200]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['rc' => 500, 'message' => $e->getMessage()]);
+        }
     }
 
     #[Route('/{id}/activate', name: 'backend_testimonial_activate', methods: ['POST'])]

@@ -32,20 +32,16 @@
                 <td>{{ picture.isActive ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>UpdatedAt</th>
-                <td>{{ picture.updatedAt ? picture.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
                 <th>Created</th>
-                <td>{{ picture.created ? picture.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ picture.created ? picture.created|date('D, d M Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Updated</th>
-                <td>{{ picture.updated ? picture.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ picture.updated ? picture.updated|date('D, d M Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>DeletedAt</th>
-                <td>{{ picture.deletedAt ? picture.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ picture.deletedAt ? picture.deletedAt|date('D, d M Y H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

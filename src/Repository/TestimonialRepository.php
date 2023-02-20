@@ -21,15 +21,6 @@ class TestimonialRepository extends ServiceEntityRepository
         parent::__construct($registry, Testimonial::class);
     }
 
-    public function getOrdered(): array
-    {
-        $qb = $this->createQueryBuilder('t');
-        $qb
-            ->orderBy('t.created', 'DESC');
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findAllActive()
     {
         $qb = $this->createQueryBuilder('t');

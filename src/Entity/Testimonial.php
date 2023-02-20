@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
+use Gedmo\Mapping\Annotation\SortablePosition;
 use Gedmo\Uploadable\Uploadable;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -32,6 +33,7 @@ class Testimonial implements Uploadable
     private ?string $image = null;
 
     #[ORM\Column(nullable: true)]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column]

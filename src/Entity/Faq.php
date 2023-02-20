@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
+use Gedmo\Mapping\Annotation\SortablePosition;
 
 use App\Repository\FaqRepository;
 
@@ -21,6 +22,7 @@ class Faq
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[SortablePosition]
     private ?int $position = null;
 
     #[ORM\Column]

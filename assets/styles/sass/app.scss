@@ -20,5 +20,14 @@ $primary-button-color: #1e528c;
   );
 }
 
+tbody.sortable td.handle {
+  width: 32px; cursor: pointer;
+  background: url($image-path + '/drag-handle-24.png') no-repeat center;
+}
+
+tbody.sortable td {
+  vertical-align: middle;
+}
+
 @import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
 @import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";

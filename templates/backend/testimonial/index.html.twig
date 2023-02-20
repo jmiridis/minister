@@ -21,9 +21,9 @@
             <th></th>
         </tr>
         </thead>
-        <tbody id="sortable">
+        <tbody class="sortable">
         {% for testimonial in testimonials %}
-            <tr data-entity-id="{{ testimonial.id }}" class="sortable">
+            <tr class="sortable" data-url="{{ path('backend_testimonial_sort', {id:'_id_',position:'_position_'}) }}" data-entity-id="{{ testimonial.id }}">
                 <td class="handle">&nbsp;</td>
                 <td>{{ testimonial.id }}</td>
                 <td>

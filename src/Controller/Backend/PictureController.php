@@ -20,7 +20,7 @@ class PictureController extends AbstractController
     public function index(PictureRepository $pictureRepository): Response
     {
         return $this->render('backend/picture/index.html.twig', [
-            'pictures' => $pictureRepository->findAll(),
+            'pictures' => $pictureRepository->findAllSorted(),
         ]);
     }
 
@@ -67,6 +67,20 @@ class PictureController extends AbstractController
             'picture' => $picture,
             'form'    => $form,
         ]);
+    }
+
+    #[Route('/{id}/sort/{position}', name: 'backend_picture_sort', methods: ['POST'])]
+    public function sortAction(Picture $picture, int $position, EntityManagerInterface $em): JsonResponse
+    {
+        try {
+            $picture->setPosition($position);
+            $em->persist($picture);
+            $em->flush();
+
+            return new JsonResponse(['rc' => 200]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['rc' => 500, 'message' => $e->getMessage()]);
+        }
     }
 
     #[Route('/{id}/activate', name: 'backend_picture_activate', methods: ['POST'])]

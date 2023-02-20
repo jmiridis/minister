@@ -2,8 +2,10 @@
 
 namespace App\Controller\Backend;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +21,7 @@ class FaqController extends AbstractController
     public function index(FaqRepository $faqRepository): Response
     {
         return $this->render('backend/faq/index.html.twig', [
-            'faqs' => $faqRepository->findAll(),
+            'faqs' => $faqRepository->findAllSorted(),
         ]);
     }
 
@@ -67,6 +69,20 @@ class FaqController extends AbstractController
             'form' => $form,
             'delete_form' => $this->createDeleteForm($faq)->createView()
         ]);
+    }
+
+    #[Route('/{id}/sort/{position}', name: 'backend_faq_sort', methods: ['POST'])]
+    public function sortAction(Faq $faq, int $position, EntityManagerInterface $em): JsonResponse
+    {
+        try {
+            $faq->setPosition($position);
+            $em->persist($faq);
+            $em->flush();
+
+            return new JsonResponse(['rc' => 200]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['rc' => 500, 'message' => $e->getMessage()]);
+        }
     }
 
     #[Route('/{id}', name: 'backend_faq_delete', methods: ['POST'])]

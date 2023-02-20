@@ -21,9 +21,9 @@
             <th></th>
         </tr>
         </thead>
-        <tbody id="sortable">
+        <tbody class="sortable">
         {% for picture in pictures %}
-            <tr data-entity-id="{{ picture.id }}" class="sortable">
+            <tr data-url="{{ path('backend_picture_sort', {id:'_id_',position:'_position_'}) }}" data-entity-id="{{ picture.id }}" class="sortable">
                 <td class="handle">&nbsp;</td>
                 <td>{{ picture.id }}</td>
                 <td>

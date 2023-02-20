@@ -28,15 +28,17 @@
 
     <meta name="theme-color" content="#ffffff">
 
-    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+    {{ encore_entry_link_tags('app') }}
+    <style>
+        h1 {
+            font-family: "univers-light-norma", sans-serif;
+            font-size: 2em;
+            margin: .5em 0 1em 0;
+        }
+    </style>
+    {% block stylesheets %}{% endblock %}
 
-
-{#    {% javascripts#}
-{#    'assets/vendor/jquery/dist/jquery.min.js'#}
-{#    'assets/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js' %}#}
-{#    <script src="{{ asset_url }}"></script>#}
-{#    {% endjavascripts %}#}
-    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+    {{ encore_entry_script_tags('app') }}
 </head>
 
 <body>
@@ -46,7 +48,8 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-sm-12"><img src="{{ asset('images/header-mayela-miridis.png') }}" style="margin: 0 auto; max-width: 100%;"></div>
+                <div class="col-sm-12"><img src="{{ asset('images/header-mayela-miridis.png') }}"
+                                            style="margin: 0 auto; max-width: 100%;"></div>
             </div>
         </div>
         <div class="motto-bar">
@@ -78,7 +81,8 @@
                         <a title="Skype" href="" class="social-button skype">&nbsp;</a>
                     </div>
                     <div class="col-xs-1 button text-right">
-                        <a title="Email"  class="social-button email" href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#121;&#101;&#108;&#97;&#64;&#109;&#105;&#114;&#105;&#100;&#105;&#115;&#46;&#99;&#111;&#109;'>&#109;&#97;&#121;&#101;&#108;&#97;&#64;&#109;&#105;&#114;&#105;&#100;&#105;&#115;&#46;&#99;&#111;&#109;</a>
+                        <a title="Email" class="social-button email"
+                           href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#121;&#101;&#108;&#97;&#64;&#109;&#105;&#114;&#105;&#100;&#105;&#115;&#46;&#99;&#111;&#109;'>&#109;&#97;&#121;&#101;&#108;&#97;&#64;&#109;&#105;&#114;&#105;&#100;&#105;&#115;&#46;&#99;&#111;&#109;</a>
                     </div>
 
                 </div>
@@ -87,6 +91,6 @@
     </div>
 
 </div>
-
+{% block javascripts %}{% endblock %}
 </body>
 </html>

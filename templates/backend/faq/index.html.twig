@@ -18,9 +18,9 @@
             <th></th>
         </tr>
         </thead>
-        <tbody id="sortable">
+        <tbody class="sortable">
         {% for faq in faqs %}
-            <tr data-entity-id="{{ faq.id }}">
+            <tr data-url="{{ path('backend_faq_sort', {id:'_id_',position:'_position_'}) }}" data-entity-id="{{ faq.id }}">
                 <td class="handle">&nbsp;</td>
                 <td>{{ faq.id }}</td>
                 <td>

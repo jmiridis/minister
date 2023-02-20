@@ -25,6 +25,9 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@glidejs/glide": "^3.6.0"
+        "@glidejs/glide": "^3.6.0",
+        "jquery-sortable": "^0.9.13",
+        "jquery-ui": "^1.13.2",
+        "webpack-jquery-ui": "^2.0.1"
     }
 }
