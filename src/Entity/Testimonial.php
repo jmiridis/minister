@@ -37,8 +37,19 @@ class Testimonial implements Uploadable
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[ORM\Column(name: 'signature', length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTime $weddingDate = null;
+
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $signature = null;
+    private ?string $location = null;
+
+    public function __construct()
+    {
+        $this->isActive = false;
+    }
 
     public function getId(): ?int
     {
@@ -53,6 +64,30 @@ class Testimonial implements Uploadable
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getWeddingDate(): ?DateTime
+    {
+        return $this->weddingDate;
+    }
+
+    public function setWeddingDate(?DateTime $weddingDate): self
+    {
+        $this->weddingDate = $weddingDate;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }
@@ -72,7 +107,7 @@ class Testimonial implements Uploadable
     #[Vich\UploadableField(mapping: 'testimonial_images', fileNameProperty: 'image')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $updatedAt;
 
     // ...
@@ -121,14 +156,14 @@ class Testimonial implements Uploadable
         return $this;
     }
 
-    public function getSignature(): ?string
+    public function getName(): ?string
     {
-        return $this->signature;
+        return $this->name;
     }
 
-    public function setSignature(?string $signature): self
+    public function setName(?string $name): self
     {
-        $this->signature = $signature;
+        $this->name = $name;
 
         return $this;
     }

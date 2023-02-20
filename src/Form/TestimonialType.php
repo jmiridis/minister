@@ -13,20 +13,34 @@ class TestimonialType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
-            ->add('signature')
-            ->add('imageFile', VichFileType::class, [
-                'required' => false
+            ->add('content', null, [
+                'required' => true,
             ])
-            ->add('position')
-            ->add('isActive')
-        ;
+            ->add('name', null, [
+                'required' => true,
+            ])
+            ->add('weddingDate', null, [
+                'required' => true,
+            ])
+            ->add('location', null, [
+                'required' => true,
+            ]);
+
+        if ($options['source'] === 'backend') {
+            $builder
+                ->add('imageFile', VichFileType::class, [
+                    'required' => false
+                ])
+                ->add('position')
+                ->add('isActive');
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Testimonial::class,
+            'source'     => 'frontend'
         ]);
     }
 }

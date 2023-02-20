@@ -36,7 +36,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('backend_faq_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/faq/new.html.twig', [
+        return $this->render('backend/faq/new.html.twig', [
             'faq' => $faq,
             'form' => $form,
         ]);
@@ -62,7 +62,7 @@ class FaqController extends AbstractController
             return $this->redirectToRoute('backend_faq_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/faq/edit.html.twig', [
+        return $this->render('backend/faq/edit.html.twig', [
             'faq' => $faq,
             'form' => $form,
             'delete_form' => $this->createDeleteForm($faq)->createView()

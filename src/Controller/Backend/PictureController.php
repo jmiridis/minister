@@ -37,7 +37,7 @@ class PictureController extends AbstractController
             return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/picture/new.html.twig', [
+        return $this->render('backend/picture/new.html.twig', [
             'picture' => $picture,
             'form'    => $form,
         ]);
@@ -63,7 +63,7 @@ class PictureController extends AbstractController
             return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/picture/edit.html.twig', [
+        return $this->render('backend/picture/edit.html.twig', [
             'picture' => $picture,
             'form'    => $form,
         ]);

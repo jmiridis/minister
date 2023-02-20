@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% set page_title = 'Testimonials' %}
+{% set meta_description = 'Find out what couples have said about my ceremonies.' %}
+
+{% block body %}
+
+    <p>I’m so thankful to have been a part of your beautiful day. I would really appreciate it if you would leave a
+        comment about your experience.
+    </p>
+
+    <div style="width:80%; margin: 0 auto 30px auto;">
+        {{ form_start(form, {attr:{class:'nowrap'}}) }}
+        {{ form_row(form.name, {label: 'Couple name'}) }}
+        {{ form_row(form.weddingDate) }}
+        {{ form_row(form.location, {label:"Location", attr:{placeholder:""}}) }}
+        {{ form_row(form.content, {label: 'Your experience'}) }}
+        <div class="mb-3 row"><label class="col-form-label col-sm-2 required">&nbsp;</label>
+            <div class="col-sm-10">
+                <div class="g-recaptcha" data-sitekey="6Lcfs6wZAAAAAC1COpaxdcKE5olExDQS95dNB_tU"
+                     style="margin-bottom: 15px;"></div>
+            </div>
+        </div>
+        {{ form_row(form.submit, {label: "send", attr: {class:"btn btn-primary"}}) }}
+        {{ form_end(form) }}
+    </div>
+
+    {% for testimonial in testimonials %}
+        <div class="testimonial row{% if not loop.last %} separator{% endif %}">
+            <div class="col-sm-3 col-md-3">
+                <div class="row center-block">
+                    <div class="col-xs-12 text-center">
+                        {% if testimonial.image %}
+                            <img width="120" height="120"
+                                 src="{{ vich_uploader_asset(testimonial, 'imageFile')|imagine_filter('testimonial_image') }}"
+                                 alt="{{ testimonial.name }}"/>
+                        {% else %}
+                            <img width="120" height="120" src="{{ asset('images/no-testimonial-image.png') }}"
+                                 alt="{{ testimonial.name }}"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 col-md-8">
+                <div class="comment">{{ testimonial.content }}</div>
+                <div class="author">{{ testimonial.name }}</div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://google.com/recaptcha/api.js"></script>
+{% endblock %}

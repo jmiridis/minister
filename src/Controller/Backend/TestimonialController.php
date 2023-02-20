@@ -21,7 +21,7 @@ class TestimonialController extends AbstractController
     public function index(TestimonialRepository $testimonialRepository): Response
     {
         return $this->render('backend/testimonial/index.html.twig', [
-            'testimonials' => $testimonialRepository->findAll(),
+            'testimonials' => $testimonialRepository->getOrdered(),
         ]);
     }
 
@@ -29,7 +29,9 @@ class TestimonialController extends AbstractController
     public function new(Request $request, TestimonialRepository $testimonialRepository): Response
     {
         $testimonial = new Testimonial();
-        $form        = $this->createForm(TestimonialType::class, $testimonial);
+        $form        = $this->createForm(TestimonialType::class, $testimonial, [
+            'source' => 'backend',
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,7 +40,7 @@ class TestimonialController extends AbstractController
             return $this->redirectToRoute('backend_testimonial_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/testimonial/new.html.twig', [
+        return $this->render('backend/testimonial/new.html.twig', [
             'testimonial' => $testimonial,
             'form'        => $form,
         ]);
@@ -53,11 +55,14 @@ class TestimonialController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'backend_testimonial_edit', methods: ['GET', 'POST'])]
-    public function edit(Request               $request,
-                         Testimonial           $testimonial,
-                         TestimonialRepository $testimonialRepository
+    public function edit(
+        Request               $request,
+        Testimonial           $testimonial,
+        TestimonialRepository $testimonialRepository
     ): Response {
-        $form = $this->createForm(TestimonialType::class, $testimonial);
+        $form = $this->createForm(TestimonialType::class, $testimonial, [
+            'source' => 'backend',
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,7 +71,7 @@ class TestimonialController extends AbstractController
             return $this->redirectToRoute('backend_testimonial_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('backend/testimonial/edit.html.twig', [
+        return $this->render('backend/testimonial/edit.html.twig', [
             'testimonial' => $testimonial,
             'form'        => $form,
             'delete_form' => $this->createDeleteForm($testimonial)->createView(),
@@ -85,9 +90,10 @@ class TestimonialController extends AbstractController
 
 
     #[Route('/{id}', name: 'backend_testimonial_delete', methods: ['POST'])]
-    public function delete(Request               $request,
-                           Testimonial           $testimonial,
-                           TestimonialRepository $testimonialRepository
+    public function delete(
+        Request               $request,
+        Testimonial           $testimonial,
+        TestimonialRepository $testimonialRepository
     ): Response {
         if ($this->isCsrfTokenValid('delete' . $testimonial->getId(), $request->request->get('_token'))) {
             $testimonialRepository->remove($testimonial, true);
