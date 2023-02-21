@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\SoftDeleteable;
-use Gedmo\Mapping\Annotation\SortablePosition;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 use App\Repository\FaqRepository;
 
+#[Gedmo\Loggable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: FaqRepository::class)]
-#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Faq
 {
     use AuditTrait;
@@ -21,16 +21,20 @@ class Faq
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Gedmo\SortablePosition]
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    #[SortablePosition]
     private ?int $position = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $question = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $answer = null;
 

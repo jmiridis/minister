@@ -5,12 +5,13 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\SoftDeleteable;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 use App\Repository\ContactRepository;
 
+#[Gedmo\Loggable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
-#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Contact
 {
     use AuditTrait;
@@ -21,18 +22,23 @@ class Contact
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $weddingDate = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $location = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
 

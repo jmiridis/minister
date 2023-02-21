@@ -5,16 +5,16 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\SoftDeleteable;
-use Gedmo\Mapping\Annotation\SortablePosition;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Repository\PictureRepository;
 
 #[Vich\Uploadable]
+#[Gedmo\Loggable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PictureRepository::class)]
-#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Picture
 {
     use AuditTrait;
@@ -25,19 +25,24 @@ class Picture
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $caption = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(nullable: true)]
-    #[SortablePosition]
+    #[Gedmo\SortablePosition]
     private ?int $position = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column]
     private ?bool $isActive = null;
 

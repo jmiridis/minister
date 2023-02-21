@@ -5,17 +5,17 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\SoftDeleteable;
-use Gedmo\Mapping\Annotation\SortablePosition;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Uploadable\Uploadable;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Repository\TestimonialRepository;
 
+#[Gedmo\Loggable]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: TestimonialRepository::class)]
-#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Testimonial implements Uploadable
 {
     use AuditTrait;
@@ -26,25 +26,32 @@ class Testimonial implements Uploadable
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(nullable: true)]
-    #[SortablePosition]
+    #[Gedmo\SortablePosition]
     private ?int $position = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(name: 'signature', length: 255, nullable: true)]
     private ?string $name = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTime $weddingDate = null;
 
+    #[Gedmo\Versioned]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $location = null;
 
