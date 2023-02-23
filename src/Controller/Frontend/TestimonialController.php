@@ -11,6 +11,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Controller\CaptchaControllerTrait;
@@ -33,11 +36,13 @@ class TestimonialController extends AbstractController
 
     /**
      * @throws Exception
+     * @throws TransportExceptionInterface
      */
     #[Route('', name: 'app_testimonial_create', methods: ['POST'])]
     public function createTestimonialAction(
         Request                $request,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        MailerInterface        $mailer
     ): Response {
         $testimonial = new Testimonial();
         $form        = $this->createTestimonialForm($testimonial);
@@ -50,6 +55,21 @@ class TestimonialController extends AbstractController
 
             try {
                 $em->persist($testimonial);
+
+                $email = (new Email())
+                    ->from('info@minister-mayela.com')
+                    ->to('mayela@miridis.com')
+                    ->subject($testimonial->getName() . ' has submitted a testimonial')
+                    ->text($testimonial->getContent())
+                    ->html('<p>' . $testimonial->getContent() . '</p>')
+                    //->cc('cc@example.com')
+                    //->bcc('bcc@example.com')
+                    //->replyTo('fabien@example.com')
+                    //->priority(Email::PRIORITY_HIGH)
+                ;
+
+                $mailer->send($email);
+
                 $em->flush();
                 $em->getConnection()->commit();
 
