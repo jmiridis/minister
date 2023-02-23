@@ -10,8 +10,10 @@
             <img width="120" height="120" src="{{ vich_uploader_asset(picture, 'imageFile') }}"
                  alt="{{ picture.caption }}"/>
         {% endif %}
+        <div>{{ picture.image }}</div>
     </div>
 </div>
+{{ form_row(form.position) }}
 {{ form_row(form.isActive) }}
 {% embed 'backend/_common/submitButtonGroup.html.twig' %}
     {% block buttons %}

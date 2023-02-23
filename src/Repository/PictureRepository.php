@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Picture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,28 +59,35 @@ class PictureRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Picture[] Returns an array of Picture objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @throws Exception
+     */
+    public function moveToPosition(Picture $picture, int $newPosition): void
+    {
+        $id              = $picture->getId();
+        $currentPosition = $picture->getPosition();
+        if ($currentPosition === $newPosition) {
+            return;
+        }
+        if ($currentPosition < $newPosition) {
+            $query = "UPDATE picture SET position = position - 1 WHERE position > $currentPosition and position <= $newPosition;";
+        } else {
+            $query = "UPDATE picture SET position = position + 1 WHERE position >= $newPosition and position <= $currentPosition;";
+        }
+        $query .= "UPDATE picture SET position = $newPosition WHERE id = $id";
 
-//    public function findOneBySomeField($value): ?Picture
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $this->getEntityManager()->getConnection()->executeQuery($query);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function insert(Picture $picture): void
+    {
+        $id    = $picture->getId();
+        $query = "UPDATE picture SET position = position + 1;";
+        $query .= "UPDATE picture SET position = 1 WHERE id = $id";
+
+        $this->getEntityManager()->getConnection()->executeQuery($query);
+    }
 }

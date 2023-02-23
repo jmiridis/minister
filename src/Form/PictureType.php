@@ -20,6 +20,7 @@ class PictureType extends AbstractType
                 'required'     => false,
                 'allow_delete' => false
             ])
+            ->add('position')
             ->add('isActive');
     }
 

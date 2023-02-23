@@ -2,8 +2,10 @@
 
 namespace App\Controller\Backend;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +31,16 @@ class PictureController extends AbstractController
     {
         $picture = new Picture();
         $form    = $this->createForm(PictureType::class, $picture);
-        $form->handleRequest($request);
+        try {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $pictureRepository->save($picture, true);
+                $pictureRepository->insert($picture);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $pictureRepository->save($picture, true);
-
-            return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
+            }
+        } catch (Exception $e) {
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->render('backend/picture/new.html.twig', [
@@ -44,23 +50,45 @@ class PictureController extends AbstractController
     }
 
     #[Route('/{id}', name: 'backend_picture_show', methods: ['GET'])]
-    public function show(Picture $picture): Response
+    public function show(Picture $picture, #[Autowire('%kernel.project_dir%')] $projectDir): Response
     {
+        $filePath = "$projectDir/public/images/gallery/" . $picture->getImage();
+        $exifData = exif_read_data($filePath, null, true);
+        $data     = [
+            'filename' => $exifData['FILE']['FileName'],
+            'filetype' => $exifData['FILE']['MimeType'],
+            'height'   => $exifData['COMPUTED']['Height'],
+            'width'    => $exifData['COMPUTED']['Width']
+        ];
+
         return $this->render('backend/picture/show.html.twig', [
-            'picture' => $picture,
+            'picture'   => $picture,
+            'exif_data' => $data
         ]);
     }
 
     #[Route('/{id}/edit', name: 'backend_picture_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Picture $picture, PictureRepository $pictureRepository): Response
     {
-        $form = $this->createForm(PictureType::class, $picture);
-        $form->handleRequest($request);
+        $previousPicture  = clone $picture;
+        $previousPosition = $previousPicture->getPosition();
+        $form             = $this->createForm(PictureType::class, $picture);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $pictureRepository->save($picture, true);
+        try {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPosition = $picture->getPosition();
+                $picture->setPosition($previousPosition);
+                $pictureRepository->save($picture, true);
 
-            return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
+                if ($previousPosition !== $newPosition) {
+                    $pictureRepository->moveToPosition($picture, $newPosition);
+                }
+
+                return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
+            }
+        } catch (Exception $e) {
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
 
         return $this->render('backend/picture/edit.html.twig', [
@@ -70,12 +98,11 @@ class PictureController extends AbstractController
     }
 
     #[Route('/{id}/sort/{position}', name: 'backend_picture_sort', methods: ['POST'])]
-    public function sortAction(Picture $picture, int $position, EntityManagerInterface $em): JsonResponse
+    public function sortAction(Picture $picture, int $position, PictureRepository $repo): JsonResponse
     {
+        // the provided picture must be put at the specified position moving all the other pictures down
         try {
-            $picture->setPosition($position);
-            $em->persist($picture);
-            $em->flush();
+            $repo->moveToPosition($picture, $position + 1);
 
             return new JsonResponse(['rc' => 200]);
         } catch (\Exception $e) {
