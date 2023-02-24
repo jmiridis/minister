@@ -63,8 +63,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <img src="{{ vich_uploader_asset(picture, 'imageFile') }}"
-                     alt="{{ picture.caption }}"/>
+                <img title="{{ picture.image }}" src="{{ vich_uploader_asset(picture, 'imageFile')|imagine_filter('picture_gallery') }}" alt="{{ picture.caption }}"/>
             </td>
         </tr>
         </tbody>
