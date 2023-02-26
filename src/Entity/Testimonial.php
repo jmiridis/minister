@@ -36,7 +36,6 @@ class Testimonial implements Uploadable
 
     #[Gedmo\Versioned]
     #[ORM\Column(nullable: true)]
-    #[Gedmo\SortablePosition]
     private ?int $position = null;
 
     #[Gedmo\Versioned]
