@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use App\Entity\Picture;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(
     name: 'app:picture-resolve',
@@ -25,18 +26,22 @@ class PictureResolveCommand extends Command
     private CacheManager           $imagineCacheManager;
     private FilterManager          $imagineFilterManager;
     private DataManager            $imagineDataManager;
+    private string                 $projectDir;
+
 
     public function __construct(
-        EntityManagerInterface $em,
-        CacheManager           $imagineCacheManager,
-        FilterManager          $imagineFilterManager,
-        DataManager            $imagineDataManager
+        #[Autowire('%kernel.project_dir%')] $projectDir,
+        EntityManagerInterface              $em,
+        CacheManager                        $imagineCacheManager,
+        FilterManager                       $imagineFilterManager,
+        DataManager                         $imagineDataManager
     ) {
         parent::__construct();
         $this->em                   = $em;
         $this->imagineCacheManager  = $imagineCacheManager;
         $this->imagineFilterManager = $imagineFilterManager;
         $this->imagineDataManager   = $imagineDataManager;
+        $this->projectDir           = $projectDir;
     }
 
     /**
@@ -52,23 +57,31 @@ class PictureResolveCommand extends Command
             $filter     = 'picture_gallery';
             $count      = 0;
             foreach ($this->em->getRepository(Picture::class)->findAll() as $picture) {
-                $output->write(sprintf('Processing image #%s:  %s ...', $picture->getId(), $picture->getImage()));
                 /** @var Picture $picture */
-                $imagePath = sprintf('%s/%s', $uploadPath, $picture->getImage());
-                if (0 === filesize($imagePath)) {
+                $imageFile    = $picture->getImage();
+                $absolutePath = "$this->projectDir/public/$uploadPath/$imageFile";
+                $output->write(sprintf('Processing image #%s:  %s ...', $picture->getId(), $absolutePath));
+                if (0 === $fileSize = filesize($absolutePath)) {
                     $this->em->remove($picture);
                     $output->writeln(' deleted.');
                     continue;
                 }
+                $output->write("$fileSize bytes ...");
 
-                $image = $this->imagineFilterManager->applyFilter(
-                    $this->imagineDataManager->find($filter, $imagePath),
-                    $filter
-                );
-                $this->imagineCacheManager->store($image, $picture->getImage(), $filter);
+                try {
+                    $image = $this->imagineFilterManager->applyFilter(
+                        $this->imagineDataManager->find($filter, "$uploadPath/$imageFile"),
+                        $filter
+                    );
+                    $this->imagineCacheManager->store($image, $picture->getImage(), $filter);
+                } catch (Exception $e) {
+                    $output->writeln(' error.');
+                    continue;
+                }
                 $count++;
+                $output->writeln(' resolved.');
             }
-//            $this->em->getConnection()->rollBack();
+            $this->em->flush();
             $this->em->getConnection()->commit();
 
             $io->success("$count images have been resolved.");
