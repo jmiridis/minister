@@ -9,9 +9,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 use App\Entity\Picture;
 
@@ -21,16 +21,16 @@ use App\Entity\Picture;
 )]
 class PictureImportCommand extends Command
 {
-    private KernelInterface        $kernel;
+    private string                 $projectDir;
     private EntityManagerInterface $em;
 
     private OutputInterface $output;
 
-    public function __construct(KernelInterface $kernel, EntityManagerInterface $em)
+    public function __construct(#[Autowire('%kernel.project_dir%')] $projectDir, EntityManagerInterface $em)
     {
         parent::__construct();
-        $this->kernel = $kernel;
-        $this->em     = $em;
+        $this->projectDir = $projectDir;
+        $this->em         = $em;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,7 +39,7 @@ class PictureImportCommand extends Command
         $io           = new SymfonyStyle($input, $output);
 
         try {
-            $uploadPath = $this->kernel->getProjectDir() . '/uploads';
+            $uploadPath = $this->projectDir . '/uploads';
             $processed  = $this->import($uploadPath);
             if ($processed > 0) {
                 $io->note('Flushing changes to database...');
@@ -50,10 +50,14 @@ class PictureImportCommand extends Command
             return Command::SUCCESS;
         } catch (Exception $e) {
             $io->error($e->getMessage());
+
             return Command::FAILURE;
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function import(string $uploadPath): int
     {
         $pendingPath   = "$uploadPath/pending";
@@ -76,14 +80,21 @@ class PictureImportCommand extends Command
         return $processed;
     }
 
+    /**
+     * @throws Exception
+     */
     private function processFile(string $filename, string $pendingPath, string $processedPath, string $tempPath)
     {
         $sourceFile = "$pendingPath/$filename";
         $tempFile   = "$tempPath/$filename";
-        copy($sourceFile, $tempFile);
+        if (false === copy($sourceFile, $tempFile)) {
+            throw new Exception("Could not copy $sourceFile to $tempFile");
+        }
 
         $imageFile = new UploadedFile($tempFile, $filename, null, null, true);
-        rename($sourceFile, "$processedPath/$filename");
+        if (false === rename($sourceFile, "$processedPath/$filename")) {
+            throw new Exception("Could not move $sourceFile to $processedPath/$filename");
+        }
 
         $picture = (new Picture())
             ->setImageFile($imageFile)
