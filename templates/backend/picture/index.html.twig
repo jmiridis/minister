@@ -4,8 +4,12 @@
 
 {% block body %}
 
-    {{ include('backend/_common/addButton.html.twig', {route: 'backend_picture_new', label: 'Add a Picture'}) }}
-
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/addButton.html.twig', {route: 'backend_picture_new', label: 'Add a Picture'}) }}
+            {{ include('backend/_common/uploadsButton.html.twig', {route: 'backend_pictures_pending', label:'', title:'uploads'}) }}
+        {% endblock %}
+    {% endembed %}
     <h1>{{ page_title }}</h1>
 
     <table id="sortable-table" class="table table-condensed sorted_table">

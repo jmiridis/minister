@@ -6,6 +6,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +50,7 @@ class PictureController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'backend_picture_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'backend_picture_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Picture $picture, #[Autowire('%kernel.project_dir%')] $projectDir): Response
     {
         $filePath = "$projectDir/public/images/gallery/" . $picture->getImage();
@@ -128,5 +129,31 @@ class PictureController extends AbstractController
         }
 
         return $this->redirectToRoute('backend_picture_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/pending', name: 'backend_pictures_pending', methods: ['GET'])]
+    public function pendingAction(#[Autowire('%kernel.project_dir%')] $projectDir): Response
+    {
+        try {
+            $pendingPath = "$projectDir/uploads/pending";
+            $finder      = new Finder();
+            $finder->files()->in($pendingPath);
+
+            $pendingFiles = [];
+            foreach ($finder as $file) {
+                $pendingFiles[] = $file->getFilename();
+            }
+            $tempFiles = [];
+            foreach ($finder as $file) {
+                $tempFiles[] = $file->getFilename();
+            }
+
+            return $this->render('backend/picture/pending.html.twig', [
+                'pendingFiles' => $pendingFiles,
+                'tempFiles'    => $tempFiles,
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['rc' => 500, 'message' => $e->getMessage()]);
+        }
     }
 }

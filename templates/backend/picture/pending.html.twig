@@ -1,0 +1,29 @@
+{% extends 'backend.html.twig' %}
+
+{% set page_title = "Pending uploads" %}
+
+{% block body %}
+
+    {% embed 'backend/_common/headerButtonGroup.html.twig' %}
+        {% block buttons %}
+            {{ include('backend/_common/listButton.html.twig', {route: 'backend_picture_index', label:'', title:'Gallery'}) }}
+        {% endblock %}
+    {% endembed %}
+
+    <h1>{{ page_title }}</h1>
+
+    <div style="font-size: 1.4em; opacity: .6">Folder /uploads/pending</div>
+    {% for file in pendingFiles %}
+        <p>- {{ file }}</p>
+    {% else %}
+        <p>No pending files</p>
+    {% endfor %}
+
+    <div style="font-size: 1.4em; opacity: .6">Folder /uploads/temp</div>
+    {% for file in tempFiles %}
+        <p>- {{ file }}</p>
+    {% else %}
+        <p>No temp files</p>
+    {% endfor %}
+
+{% endblock %}
