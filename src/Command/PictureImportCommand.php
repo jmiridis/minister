@@ -41,10 +41,6 @@ class PictureImportCommand extends Command
         try {
             $uploadPath = $this->projectDir . '/uploads';
             $processed  = $this->import($uploadPath);
-            if ($processed > 0) {
-                $io->note('Flushing changes to database...');
-                $this->em->flush();
-            }
             $io->success("$processed files have been processed.");
 
             return Command::SUCCESS;
@@ -64,27 +60,36 @@ class PictureImportCommand extends Command
         $processedPath = "$uploadPath/processed";
         $tempPath      = "$uploadPath/temp";
 
-        $processed = 0;
-        $finder    = new Finder();
+        $pictures = [];
+        $finder   = new Finder();
         $finder->files()->in($pendingPath);
         foreach ($finder as $file) {
 
             $filename = $file->getFilename();
             $this->output->writeln("\t- processing $filename");
 
-            $this->processFile($filename, $pendingPath, $processedPath, $tempPath);
+            $pictures[] = $this->processFile($filename, $pendingPath, $processedPath, $tempPath);
+        }
+        $pictureRepository = $this->em->getRepository(Picture::class);
+        foreach ($pictures as $picture) {
+            $pictureRepository->save($picture, true);
+            $pictureRepository->insert($picture);
 
-            $processed++;
+            $this->output->writeln("\t- processing " . $picture->getImage() . " done");
         }
 
-        return $processed;
+        return count($pictures);
     }
 
     /**
      * @throws Exception
      */
-    private function processFile(string $filename, string $pendingPath, string $processedPath, string $tempPath)
-    {
+    private function processFile(
+        string $filename,
+        string $pendingPath,
+        string $processedPath,
+        string $tempPath
+    ): Picture {
         $sourceFile = "$pendingPath/$filename";
         $tempFile   = "$tempPath/$filename";
         if (false === copy($sourceFile, $tempFile)) {
@@ -96,9 +101,8 @@ class PictureImportCommand extends Command
             throw new Exception("Could not move $sourceFile to $processedPath/$filename");
         }
 
-        $picture = (new Picture())
+        return (new Picture())
             ->setImageFile($imageFile)
             ->setIsActive(false);
-        $this->em->persist($picture);
     }
 }
